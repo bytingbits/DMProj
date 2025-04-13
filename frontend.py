@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import re
 
+st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
+
 @st.cache_data
 def download_and_load_csv(id, output):
     gdown.download(f"https://drive.google.com/uc?id={id}", output, quiet=False)
@@ -17,8 +19,6 @@ if not os.path.exists("rules.csv"):
 for col in ['antecedents', 'consequents']:
     rules_df[col] = rules_df[col].astype(str).apply(lambda x: re.sub(r"frozenset\(\{?(.*?)\}?\)", r"\1", x))
 
-# Set page configuration
-st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
 # Sidebar for global filters and settings
 st.sidebar.header("Settings")
