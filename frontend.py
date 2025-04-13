@@ -8,7 +8,8 @@ st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout=
 
 @st.cache_data
 def download_and_load_csv(id, output):
-    gdown.download(f"https://drive.google.com/uc?id={id}", output, quiet=False)
+    if not os.path.exists(output):
+        gdown.download(f"https://drive.google.com/uc?id={id}", output, quiet=False)
     df = pd.read_csv(output)
     return df
 
@@ -19,7 +20,6 @@ for col in ['antecedents', 'consequents']:
 
 
 # Sidebar for global filters and settings
-st.sidebar.header("Settings")
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
 st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, association rules, clustering, and predictions.")
 
@@ -37,23 +37,16 @@ filtered_rules = rules_df[
 
 top_rules = filtered_rules.sort_values(by="confidence", ascending=False).head(50)
 top_rules = top_rules[['antecedents', 'consequents', 'confidence', 'lift']]
+top_rules['confidence'] = top_rules['confidence'].round(2)
+top_rules['lift'] = top_rules['lift'].round(2)
 
 with c2:
-    with st.container():
-        st.markdown(
-            """
-            <div style='height: 400px; overflow-y: auto;'>
-            """,
-            unsafe_allow_html=True
-        )
-
-        if top_rules.empty:
-            st.warning("No rules match the selected filters!")
-        else:
-            st.table(top_rules.reset_index(drop=True))
-
-        st.markdown("</div>", unsafe_allow_html=True)
-    
+     if top_rules.empty:
+        st.warning("No rules match the selected filters!")
+    else:
+        top_rules.index = [''] * len(top_rules)
+        st.dataframe(top_rules, height=400)
+  
 
 
 
