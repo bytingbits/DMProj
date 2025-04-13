@@ -43,7 +43,7 @@ top_rules['lift'] = top_rules['lift'].round(2)
 with c2:
      if top_rules.empty:
         st.warning("No rules match the selected filters!")
-    else:
+     else:
         top_rules.index = [''] * len(top_rules)
         st.dataframe(top_rules, height=400)
   
