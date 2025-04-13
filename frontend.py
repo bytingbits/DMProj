@@ -12,9 +12,7 @@ def download_and_load_csv(id, output):
     df = pd.read_csv(output)
     return df
 
-#Loading required files
-if not os.path.exists("rules.csv"):
-    rules_df = download_and_load_csv("1D-A3WpSw8OtuVVM9BD1j8dLw3PORsQna", "rules.csv")
+rules_df = download_and_load_csv("1D-A3WpSw8OtuVVM9BD1j8dLw3PORsQna", "rules.csv")
 
 for col in ['antecedents', 'consequents']:
     rules_df[col] = rules_df[col].astype(str).apply(lambda x: re.sub(r"frozenset\(\{?(.*?)\}?\)", r"\1", x))
