@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import re
-from bubbly.bubbly import bubbleplot
+import plotly.express as px
 
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
@@ -26,29 +26,35 @@ top1 = itemsets_df[itemsets_df["length"] == 1].nlargest(10, "support")
 top2 = itemsets_df[itemsets_df["length"] == 2].nlargest(10, "support")
 top3 = itemsets_df[itemsets_df["length"] == 3].nlargest(10, "support")
 
-def get_bubbly_fig(data, title):
-    fig = bubbleplot(dataset=data,
-                     x_column='label',
-                     y_column='support',
-                     bubble_column='label',
-                     size_column='support',
-                     color_column='label',
-                     x_title="Itemsets",
-                     y_title="Support",
-                     title=title,
-                     height=400)
+def create_bubble(data, title):
+    fig = px.scatter(
+        data,
+        x=[0]*len(data),  # Fake x to make it vertical-ish
+        y="support",
+        size="support",
+        color="label",
+        hover_name="label",
+        title=title,
+        size_max=60,
+    )
+    fig.update_layout(
+        showlegend=False,
+        height=400,
+        margin=dict(t=40, b=20, l=20, r=20),
+    )
+    fig.update_traces(marker=dict(opacity=0.6, line=dict(width=1, color='DarkSlateGrey')))
     return fig
 
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
 with b1:
-    st.plotly_chart(get_bubbly_fig(top1, "1-Itemsets"), use_container_width=True)
+    st.plotly_chart(create_bubble(top1, "1-Itemsets"), use_container_width=True)
 
 with b2:
-    st.plotly_chart(get_bubbly_fig(top2, "2-Itemsets"), use_container_width=True)
+    st.plotly_chart(create_bubble(top2, "2-Itemsets"), use_container_width=True)
 
 with b3:
-    st.plotly_chart(get_bubbly_fig(top3, "3-Itemsets"), use_container_width=True)
+    st.plotly_chart(create_bubble(top3, "3-Itemsets"), use_container_width=True)
 
 #Association Rules Row
 st.subheader("Association Rules")
