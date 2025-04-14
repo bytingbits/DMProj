@@ -23,7 +23,7 @@ st.subheader("Frequent Itemsets")
 itemsets_df["label"] = itemsets_df["itemsets"].apply(lambda x: ", ".join(eval(x)))
 itemsets_df['support'] = itemsets_df['support'].round(2)
 
-def create_bubble(data, title, color_palette):
+def create_bubble(data, title):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
     data["x"] = np.random.normal(loc=0, scale=0.05, size=len(data))  
@@ -37,7 +37,7 @@ def create_bubble(data, title, color_palette):
         hover_name="label",
         title=title,
         size_max=60,
-        color_discrete_sequence=color_palette 
+        color_discrete_sequence=px.colors.sequential.Pastel
     )
 
     fig.update_layout(
@@ -74,13 +74,13 @@ top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
 with b1:
-    st.plotly_chart(create_bubble(top1, "1-Itemsets", px.colors.sequential.Pastel), use_container_width=True)
+    st.plotly_chart(create_bubble(top1, "1-Itemsets"), use_container_width=True)
 
 with b2:
-    st.plotly_chart(create_bubble(top2, "2-Itemsets", px.colors.sequential.Pastel1), use_container_width=True)
+    st.plotly_chart(create_bubble(top2, "2-Itemsets"), use_container_width=True)
 
 with b3:
-    st.plotly_chart(create_bubble(top3, "3-Itemsets", px.colors.sequential.Pastel2), use_container_width=True)
+    st.plotly_chart(create_bubble(top3, "3-Itemsets"), use_container_width=True)
 
 #Association Rules Row
 st.subheader("Association Rules")
