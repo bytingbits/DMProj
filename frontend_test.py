@@ -18,8 +18,8 @@ def load_data():
 
 df = load_data()
 
-# Extract frequency column
-frequencies = df['frequency']
+# Extract Frequency column
+frequencies = df['Frequency']
 
 # Calculate thresholds for top and bottom 2.5%
 lower_thresh = frequencies.quantile(0.025)
