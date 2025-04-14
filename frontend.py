@@ -59,8 +59,7 @@ def create_bubble(data, title, color_palette):
         yaxis=dict(title="Support", showgrid=True),
         updatemenus=[],  
         sliders=[],
-        transition={'duration': 0},
-        frame=dict(duration=400, redraw=True)
+        transition={'duration': 0}
     )
 
     fig.update_traces(
