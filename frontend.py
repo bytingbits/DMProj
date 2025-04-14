@@ -26,12 +26,13 @@ itemsets_df['support'] = itemsets_df['support'].round(2)
 def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
-    data['x'] = np.random.uniform(-0.3, 0.3, size=len(data))  
+    data["x"] = [i % 5 for i in range(len(data))]
+    data["y"] = [-i // 5 for i in range(len(data))] 
 
     fig = px.scatter(
         data,
         x="x",
-        y="support",
+        y="y",
         size="size_scaled",
         color="label",
         hover_name="label",
@@ -45,7 +46,7 @@ def create_bubble(data, title, color_palette):
         height=400,
         margin=dict(t=40, b=20, l=20, r=20),
         xaxis=dict(showticklabels=False, title=""),
-        yaxis=dict(title="Support", showgrid=True)
+        yaxis=dict(showticklabels=False, title="")
     )
 
     fig.update_traces(
