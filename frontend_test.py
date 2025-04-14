@@ -54,7 +54,7 @@ bin_size = st.slider('No. of bins', min_value=1, max_value=17500, value=1000)
 
 # Create the histogram with Plotly
 fig = px.histogram(df, x="Frequency", nbins=bin_size, title="Service Frequency Histogram")
-fig.update_layout(bargap=0.2)  # Adjusting the gap between bars for better visualization
+fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visualization
 
 # Show the histogram
 st.plotly_chart(fig)
