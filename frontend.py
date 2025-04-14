@@ -28,14 +28,14 @@ st.subheader("Association Rules")
 c1, c2 = st.columns((2.5,7.5))
 with c1:
    conf_val = st.slider("Confidence", 0.5, 1.0, (0.5, 1.0), step=0.01)
-   lift_val = st.slider("Lift", 1.0, round(float(rules_df['lift'].max()), 1), (1.0, round(float(rules_df['lift'].max()), 1)), step=0.1)
+   lift_val = st.slider("Lift", 1.0, 3.3, (1.0, 3.3), step=0.1)
     
 filtered_rules = rules_df[
     (rules_df['confidence'] >= conf_val[0]) & (rules_df['confidence'] <= conf_val[1]) &
     (rules_df['lift'] >= lift_val[0]) & (rules_df['lift'] <= lift_val[1])
 ]  
 
-top_rules = filtered_rules.sort_values(by="confidence", ascending=False).head(50)
+top_rules = filtered_rules.sort_values(by="confidence", ascending=False).head(20)
 top_rules = top_rules[['antecedents', 'consequents', 'confidence', 'lift']]
 top_rules['confidence'] = top_rules['confidence'].round(2)
 top_rules['lift'] = top_rules['lift'].round(2)
@@ -45,7 +45,7 @@ with c2:
         st.warning("No rules match the selected filters!")
      else:
         top_rules.index = [''] * len(top_rules)
-        st.dataframe(top_rules, height=400)
+        st.dataframe(top_rules, height=100)
   
 
 
