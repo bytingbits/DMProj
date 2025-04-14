@@ -1,17 +1,16 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import numpy as np
 
 # GitHub raw CSV URL
 CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_service_frequencies.csv"
 
-st.set_page_config(page_title="Service Frequency Visualizer", layout="wide")
+st.set_page_config(page_title="All Service Frequencies", layout="wide")
 
-st.title("📊 Service Frequency Visualizer")
-st.markdown("This app shows a **bar chart** and a **histogram** with equi-width binning of all services.")
+st.title("📊 All Service Frequencies Bar Chart")
+st.markdown("Visualizing frequency of every single service in the dataset.")
 
-# Load CSV
+# Load data
 @st.cache_data
 def load_data():
     df = pd.read_csv(CSV_URL)
@@ -19,64 +18,23 @@ def load_data():
 
 df = load_data()
 
-# --- BAR CHART ---
-
-st.header("📌 Bar Chart of All Services")
-
-log_scale = st.checkbox("🔁 Use Log Scale (Y-axis)?", value=False)
-
-fig_bar = px.bar(
+# Plot all services as a bar chart
+fig = px.bar(
     df,
     x='Service',
     y='Frequency',
-    title='All Services - Frequencies',
+    title='Frequency of All Services (Descending Order)',
     labels={'Service': 'Service', 'Frequency': 'Frequency'},
     template='plotly_dark',
     color='Frequency',
     color_continuous_scale='teal'
 )
 
-fig_bar.update_layout(
+fig.update_layout(
     xaxis_title='Service',
-    yaxis_title='Frequency (Log Scale)' if log_scale else 'Frequency',
+    yaxis_title='Frequency',
     xaxis_tickangle=60,
-    yaxis_type='log' if log_scale else 'linear',
     height=700
 )
 
-st.plotly_chart(fig_bar, use_container_width=True)
-
-# --- HISTOGRAM ---
-
-st.header("📊 Histogram of Service Frequencies")
-
-# Slider to select number of bins
-num_bins = st.slider("🔧 Select Number of Bins", min_value=10, max_value=200, value=50)
-
-# Create histogram using numpy histogram binning
-counts, bins = np.histogram(df['Frequency'], bins=num_bins)
-bin_centers = 0.5 * (bins[:-1] + bins[1:])
-
-# Create a histogram DataFrame
-hist_df = pd.DataFrame({
-    'BinCenter': bin_centers,
-    'Count': counts
-})
-
-# Plot histogram
-fig_hist = px.bar(
-    hist_df,
-    x='BinCenter',
-    y='Count',
-    labels={'BinCenter': 'Frequency Range (bin center)', 'Count': 'Number of Services'},
-    title=f'Histogram of Service Frequencies with {num_bins} Bins',
-    template='plotly_dark'
-)
-
-fig_hist.update_layout(
-    xaxis_title='Frequency Range',
-    yaxis_title='Number of Services',
-    height=600
-)
-
-st.plotly_chart(fig_hist, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
