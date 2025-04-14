@@ -27,24 +27,37 @@ top2 = itemsets_df[itemsets_df["length"] == 2].nlargest(10, "support")
 top3 = itemsets_df[itemsets_df["length"] == 3].nlargest(10, "support")
 
 def create_bubble(data, title):
+    # Add a random x value to spread bubbles horizontally
+    data = data.copy()
+    data["x"] = np.random.uniform(-1, 1, size=len(data))  # random float between -1 and 1
+    
     fig = px.scatter(
         data,
-        x=[0]*len(data),  # Fake x to make it vertical-ish
+        x="x",
         y="support",
         size="support",
         color="label",
         hover_name="label",
         title=title,
         size_max=60,
+        color_discrete_sequence=px.colors.qualitative.Pastel  # Soft aesthetic colors
     )
+
     fig.update_layout(
         showlegend=False,
         height=400,
         margin=dict(t=40, b=20, l=20, r=20),
+        xaxis=dict(showticklabels=False, title=None),
+        yaxis=dict(title="Support")
     )
-    fig.update_traces(marker=dict(opacity=0.6, line=dict(width=1, color='DarkSlateGrey')))
-    return fig
 
+    fig.update_traces(
+        marker=dict(opacity=0.7, line=dict(width=1, color='DarkSlateGrey')),
+        hovertemplate="<b>%{hovertext}</b><br>Support: %{y:.2f}<extra></extra>"
+    )
+
+    return fig
+    
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
 with b1:
