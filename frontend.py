@@ -45,7 +45,7 @@ def create_bubble(data, title, color_palette):
         height=400,
         margin=dict(t=40, b=20, l=20, r=20),
         xaxis=dict(showticklabels=False, title=""),
-        yaxis=dict(showticklabels=False, title="")
+        yaxis=dict(title="Support")
     )
 
     fig.update_traces(
