@@ -39,7 +39,7 @@ def create_bubble(data, title, color_palette):
     full_data = pd.concat(all_frames, ignore_index=True)
     
     fig = px.scatter(
-        data,
+        full_data,
         x="x",
         y="support",
         size="size_scaled",
