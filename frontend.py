@@ -33,8 +33,8 @@ def create_bubble(data, title, color_palette):
     interleaved["grid_x"] = [i % 5 for i in range(len(interleaved))]
     interleaved["grid_y"] = [i // 5 for i in range(len(interleaved))]
 
-    interleaved["x_spacing"] = 0.6 + 0.02 * interleaved["size_scaled"]
-    interleaved["y_spacing"] = 0.6 + 0.02 * interleaved["size_scaled"]
+    interleaved["x_spacing"] = 1 + 0.02 * interleaved["size_scaled"]
+    interleaved["y_spacing"] = 0.1 + 0.02 * interleaved["size_scaled"]
 
     interleaved["x"] = interleaved["grid_x"] * interleaved["x_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
     interleaved["y"] = -interleaved["grid_y"] * interleaved["y_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
