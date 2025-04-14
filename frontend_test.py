@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -22,10 +21,10 @@ df = load_data()
 # Plot histogram
 fig = px.histogram(
     df,
-    x='frequency',
+    x='Frequency',  # Fixed capitalization
     nbins=50,
     title='Distribution of Service Frequencies',
-    labels={'frequency': 'Service Frequency'},
+    labels={'Frequency': 'Service Frequency'},
     template='plotly_white',
     color_discrete_sequence=['teal']
 )
