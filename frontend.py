@@ -26,7 +26,7 @@ itemsets_df['support'] = itemsets_df['support'].round(2)
 def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
-    data['x'] = np.linspace(-0.3, 0.3, len(data)) + np.random.normal(0, 0.01, len(data))  
+    data['x'] = np.random.normal(loc=0, scale=0.05, size=len(data))  
     
     fig = px.scatter(
         data,
@@ -77,10 +77,10 @@ with b1:
     st.plotly_chart(create_bubble(top1, "1-Itemsets", px.colors.sequential.Tealgrn), use_container_width=True)
 
 with b2:
-    st.plotly_chart(create_bubble(top2, "2-Itemsets", px.colors.sequential.Pinkyl), use_container_width=True)
+    st.plotly_chart(create_bubble(top2, "2-Itemsets", px.colors.sequential.Purpor), use_container_width=True)
 
 with b3:
-    st.plotly_chart(create_bubble(top3, "3-Itemsets", px.colors.sequential.Sunset), use_container_width=True)
+    st.plotly_chart(create_bubble(top3, "3-Itemsets", px.colors.sequential.RdPu), use_container_width=True)
 
 #Association Rules Row
 st.subheader("Association Rules")
