@@ -28,24 +28,13 @@ def create_bubble(data, title, color_palette):
     data["size_scaled"] = data["support"] ** 2.5
     data['x'] = np.random.uniform(-0.3, 0.3, size=len(data))  
 
-    all_frames = []
-    for frame_id in range(10):
-        jitter = np.random.normal(loc=0.0, scale=0.05, size=len(data))
-        frame = data.copy()
-        frame['x'] = np.linspace(-0.2, 0.2, len(data)) + jitter
-        frame['frame'] = frame_id  # <-- Important!
-        all_frames.append(frame)
-
-    full_data = pd.concat(all_frames, ignore_index=True)
-    
     fig = px.scatter(
-        full_data,
+        data,
         x="x",
         y="support",
         size="size_scaled",
         color="label",
         hover_name="label",
-        animation_frame='frame',
         title=title,
         size_max=60,
         color_discrete_sequence=color_palette
@@ -56,10 +45,7 @@ def create_bubble(data, title, color_palette):
         height=400,
         margin=dict(t=40, b=20, l=20, r=20),
         xaxis=dict(showticklabels=False, title=""),
-        yaxis=dict(title="Support", showgrid=True),
-        updatemenus=[],  
-        sliders=[],
-        transition={'duration': 0}
+        yaxis=dict(title="Support", showgrid=True)
     )
 
     fig.update_traces(
