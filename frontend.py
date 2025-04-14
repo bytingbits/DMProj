@@ -27,6 +27,16 @@ def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
     data['x'] = np.random.uniform(-0.3, 0.3, size=len(data))  
+
+    frames = []
+    for frame in range(10):
+        jitter = np.random.normal(loc=0.0, scale=0.05, size=len(data))
+        frame_data = data.copy()
+        frame_data['x'] = np.linspace(-0.2, 0.2, len(data)) + jitter
+        frame_data['frame'] = frame
+        frames.append(frame_data)
+
+    full_data = pd.concat(frames)
     
     fig = px.scatter(
         data,
@@ -35,6 +45,7 @@ def create_bubble(data, title, color_palette):
         size="size_scaled",
         color="label",
         hover_name="label",
+        animation_frame='frame',
         title=title,
         size_max=60,
         color_discrete_sequence=color_palette
@@ -45,13 +56,23 @@ def create_bubble(data, title, color_palette):
         height=400,
         margin=dict(t=40, b=20, l=20, r=20),
         xaxis=dict(showticklabels=False, title=""),
-        yaxis=dict(title="Support", showgrid=True)
+        yaxis=dict(title="Support", showgrid=True),
+        sliders=[{
+            'steps': [],
+            'visible': False
+        }]
     )
 
     fig.update_traces(
         marker=dict(opacity=0.7, line=dict(width=1, color='DarkSlateGrey')),
         hovertemplate="<b>%{hovertext}</b><br>Support: %{y:.2f}<extra></extra>"
     )
+
+    fig.layout.updatemenus = []  
+    fig.layout.autoplay = True
+    fig.layout.transition = {'duration': 300}
+    fig.layout.frame = {'duration': 400, 'redraw': True}
+    fig.layout.animation = dict(frame=dict(duration=300, redraw=True), fromcurrent=True, mode='immediate')
 
     return fig
 
