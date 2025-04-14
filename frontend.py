@@ -23,14 +23,9 @@ st.subheader("Frequent Itemsets")
 itemsets_df["label"] = itemsets_df["itemsets"].apply(lambda x: ", ".join(eval(x)))
 itemsets_df['support'] = itemsets_df['support'].round(2)
 
-top1 = itemsets_df[itemsets_df["length"] == 1].nlargest(10, "support")
-top2 = itemsets_df[itemsets_df["length"] == 2].nlargest(10, "support")
-top3 = itemsets_df[itemsets_df["length"] == 3].nlargest(10, "support")
-
 def create_bubble(data, title):
-    # Add a random x value to spread bubbles horizontally
     data = data.copy()
-    data["x"] = np.random.uniform(-1, 1, size=len(data))  # random float between -1 and 1
+    data["x"] = np.random.uniform(-1, 1, size=len(data))  
     
     fig = px.scatter(
         data,
@@ -41,7 +36,7 @@ def create_bubble(data, title):
         hover_name="label",
         title=title,
         size_max=60,
-        color_discrete_sequence=px.colors.qualitative.Pastel  # Soft aesthetic colors
+        color_discrete_sequence=px.colors.qualitative.Pastel 
     )
 
     fig.update_layout(
@@ -58,6 +53,22 @@ def create_bubble(data, title):
     )
 
     return fig
+
+def get_diverse_top_n(df, length, n=10):
+    subset = df[df["length"] == length].copy()
+    subset["support_bin"] = pd.qcut(subset["support"], q=min(n, len(subset)), duplicates='drop')
+    
+    diverse_sample = (
+        subset.groupby("support_bin", group_keys=False)
+        .apply(lambda x: x.sample(1, random_state=42))
+        .reset_index(drop=True)
+    )
+    
+    return diverse_sample
+
+top1 = get_diverse_top_n(itemsets_df_df, length=1, n=10)
+top2 = get_diverse_top_n(itemsets_df_df, length=2, n=10)
+top3 = get_diverse_top_n(itemsets_df_df, length=3, n=10)
     
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
