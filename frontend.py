@@ -1,5 +1,4 @@
 import streamlit as st
-import gdown
 import os
 import pandas as pd
 import re
@@ -7,17 +6,10 @@ import re
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
 @st.cache_data
-def download_and_load_csv(id, output):
-    if not os.path.exists(output):
-        gdown.download(f"https://drive.google.com/uc?id={id}", output, quiet=False)
-    df = pd.read_csv(output)
-    return df
+def load_csv(url):
+    return pd.read_csv(url)
 
-rules_df = download_and_load_csv("1D-A3WpSw8OtuVVM9BD1j8dLw3PORsQna", "rules.csv")
-
-for col in ['antecedents', 'consequents']:
-    rules_df[col] = rules_df[col].astype(str).apply(lambda x: re.sub(r"frozenset\(\{?(.*?)\}?\)", r"\1", x))
-
+rules_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/association_rules.csv")
 
 # Sidebar for global filters and settings
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
@@ -27,9 +19,9 @@ st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, a
 st.subheader("Association Rules")
 c1, spacer, c2 = st.columns([2.5, 0.5, 7])
 with c1:
-   st.markdown("<div style='height: 75px;'></div>", unsafe_allow_html=True)
+   st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
    conf_val = st.slider("Confidence", 0.5, 1.0, (0.5, 1.0), step=0.01)
-   lift_val = st.slider("Lift", 1.0, 3.3, (1.0, 3.3), step=0.1)
+   lift_val = st.slider("Lift", 1.0, round(float(rules_df['lift'].max()), 1), (1.0, round(float(rules_df['lift'].max()), 1)), step=0.1)
     
 filtered_rules = rules_df[
     (rules_df['confidence'] >= conf_val[0]) & (rules_df['confidence'] <= conf_val[1]) &
