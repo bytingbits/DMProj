@@ -26,23 +26,12 @@ itemsets_df['support'] = itemsets_df['support'].round(2)
 def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
-    sorted_data = data.sort_values("support", ascending=False).reset_index(drop=True)
-    half = len(sorted_data) // 2
-    interleaved = pd.concat([sorted_data.iloc[::2], sorted_data.iloc[1::2][::-1]], ignore_index=True)
-
-    interleaved["grid_x"] = [i % 5 for i in range(len(interleaved))]
-    interleaved["grid_y"] = [i // 5 for i in range(len(interleaved))]
-
-    interleaved["x_spacing"] = 1 + 0.02 * interleaved["size_scaled"]
-    interleaved["y_spacing"] = 0.1 + 0.02 * interleaved["size_scaled"]
-
-    interleaved["x"] = interleaved["grid_x"] * interleaved["x_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
-    interleaved["y"] = -interleaved["grid_y"] * interleaved["y_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
+    data['x'] = np.random.uniform(-0.3, 0.3, size=len(data)) 
 
     fig = px.scatter(
-        interleaved,
+        data,
         x="x",
-        y="y",
+        y="support",
         size="size_scaled",
         color="label",
         hover_name="label",
