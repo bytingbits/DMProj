@@ -26,8 +26,12 @@ itemsets_df['support'] = itemsets_df['support'].round(2)
 def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
-    data["x"] = [i % 5 for i in range(len(data))]
-    data["y"] = [-i // 5 for i in range(len(data))] 
+    data["grid_x"] = [i % num_cols for i in range(len(data))]
+    data["grid_y"] = [-i // num_cols for i in range(len(data))]
+
+    np.random.seed(42) 
+    data["x"] = data["grid_x"] + np.random.uniform(-0.2, 0.2, size=len(data))
+    data["y"] = data["grid_y"] + np.random.normal(0, 0.1, size=len(data))
 
     fig = px.scatter(
         data,
