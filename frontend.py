@@ -36,7 +36,6 @@ def get_bubbly_fig(data, title):
                      x_title="Itemsets",
                      y_title="Support",
                      title=title,
-                     color_discrete_sequence='Pastel',
                      height=400)
     return fig
 
