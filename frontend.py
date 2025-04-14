@@ -29,7 +29,7 @@ def create_bubble(data, title, color_palette):
     data['x'] = np.random.uniform(-0.3, 0.3, size=len(data))  
 
     all_frames = []
-    for frame_id in range(n_frames):
+    for frame_id in range(10):
         jitter = np.random.normal(loc=0.0, scale=0.05, size=len(data))
         frame = data.copy()
         frame['x'] = np.linspace(-0.2, 0.2, len(data)) + jitter
