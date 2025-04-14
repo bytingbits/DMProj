@@ -5,10 +5,10 @@ import plotly.express as px
 # GitHub raw CSV URL
 CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_service_frequencies.csv"
 
-st.set_page_config(page_title="Service Frequency Histogram", layout="centered")
+st.set_page_config(page_title="Service Frequencies", layout="wide")
 
-st.title("📊 Service Frequency Histogram")
-st.markdown("Visualizing distribution of all services from the dataset.")
+st.title("📊 Service Frequencies Bar Chart")
+st.markdown("Each bar shows the frequency of a specific service.")
 
 # Load data
 @st.cache_data
@@ -18,25 +18,26 @@ def load_data():
 
 df = load_data()
 
-# Optional: toggle log scale
-log_y = st.checkbox("🔍 Use log scale for Y-axis", value=True)
+# Optional top-k filter
+top_k = st.slider("🔝 Show Top K Services", min_value=10, max_value=len(df), value=50)
 
-# Plot histogram with more bins
-fig = px.histogram(
-    df,
-    x='Frequency',
-    nbins=200,  # More bins for better granularity
-    title='Distribution of Service Frequencies',
-    labels={'Frequency': 'Service Frequency'},
+# Plot bar chart
+fig = px.bar(
+    df.head(top_k),
+    x='Service',
+    y='Frequency',
+    title=f'Top {top_k} Services by Frequency',
+    labels={'Service': 'Service Name', 'Frequency': 'Frequency'},
     template='plotly_dark',
-    color_discrete_sequence=['cyan']
+    color='Frequency',
+    color_continuous_scale='teal'
 )
 
 fig.update_layout(
-    bargap=0.1,
-    xaxis_title='Frequency',
-    yaxis_title='Number of Services',
-    yaxis_type='log' if log_y else 'linear'  # toggle between log/linear
+    xaxis_tickangle=45,
+    xaxis_title='Service',
+    yaxis_title='Frequency',
+    height=600
 )
 
 st.plotly_chart(fig, use_container_width=True)
