@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import re
+from bubbly.bubbly import bubbleplot
 
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
@@ -10,10 +11,45 @@ def load_csv(url):
     return pd.read_csv(url)
 
 rules_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/association_rules.csv")
+itemsets_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/frequent_itemsets.csv")
 
 # Sidebar for global filters and settings
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
 st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, association rules, clustering, and predictions.")
+
+#Itemsets Row
+st.subheader("Frequent Itemsets")
+itemsets_df["label"] = itemsets_df["itemsets"].apply(lambda x: ", ".join(eval(x)))
+itemsets_df['support'] = itemsets_df['support'].round(2)
+
+top1 = itemsets_df[itemsets_df["length"] == 1].nlargest(10, "support")
+top2 = itemsets_df[itemsets_df["length"] == 2].nlargest(10, "support")
+top3 = itemsets_df[itemsets_df["length"] == 3].nlargest(10, "support")
+
+def get_bubbly_fig(data, title):
+    fig = bubbleplot(dataset=data,
+                     x_column='label',
+                     y_column='support',
+                     bubble_column='label',
+                     size_column='support',
+                     color_column='label',
+                     x_title="Itemsets",
+                     y_title="Support",
+                     title=title,
+                     color_discrete_sequence='Pastel',
+                     height=400)
+    return fig
+
+b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
+
+with b1:
+    st.plotly_chart(get_bubbly_fig(top1, "1-Itemsets"), use_container_width=True)
+
+with b2:
+    st.plotly_chart(get_bubbly_fig(top2, "2-Itemsets"), use_container_width=True)
+
+with b3:
+    st.plotly_chart(get_bubbly_fig(top3, "3-Itemsets"), use_container_width=True)
 
 #Association Rules Row
 st.subheader("Association Rules")
