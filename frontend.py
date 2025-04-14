@@ -45,7 +45,7 @@ with c2:
         st.warning("No rules match the selected filters!")
      else:
         top_rules.index = [''] * len(top_rules)
-        st.dataframe(top_rules, height=100)
+        st.dataframe(top_rules, height=250)
   
 
 
