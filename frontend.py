@@ -66,9 +66,9 @@ def get_diverse_top_n(df, length, n=10):
     
     return diverse_sample
 
-top1 = get_diverse_top_n(itemsets_df_df, length=1, n=10)
-top2 = get_diverse_top_n(itemsets_df_df, length=2, n=10)
-top3 = get_diverse_top_n(itemsets_df_df, length=3, n=10)
+top1 = get_diverse_top_n(itemsets_df, length=1, n=10)
+top2 = get_diverse_top_n(itemsets_df, length=2, n=10)
+top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
     
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
