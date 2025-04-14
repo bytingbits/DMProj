@@ -19,7 +19,7 @@ def load_data():
 df = load_data()
 
 # Optional top-k filter
-top_k = st.slider("🔝 Show Top K Services", min_value=10, 200, value=50)
+top_k = st.slider("🔝 Show Top K Services", min_value=10, max_value=200, value=50)
 
 # Plot bar chart
 fig = px.bar(
