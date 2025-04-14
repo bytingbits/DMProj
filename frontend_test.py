@@ -9,7 +9,7 @@ CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_servi
 st.set_page_config(page_title="Service Frequency Visualizer", layout="wide")
 
 st.title("📊 Service Frequency Visualizer")
-st.markdown("This app shows a **bar chart (log scale)** and a **histogram** with equi-width binning of all services.")
+st.markdown("This app shows a **bar chart** and a **histogram** with equi-width binning of all services.")
 
 # Load CSV
 @st.cache_data
@@ -19,15 +19,17 @@ def load_data():
 
 df = load_data()
 
-# --- BAR CHART (log y-axis) ---
+# --- BAR CHART ---
 
-st.header("📌 Bar Chart of All Services (Log Scale)")
+st.header("📌 Bar Chart of All Services")
+
+log_scale = st.checkbox("🔁 Use Log Scale (Y-axis)?", value=False)
 
 fig_bar = px.bar(
     df,
     x='Service',
     y='Frequency',
-    title='All Services - Frequencies (Log Scale)',
+    title='All Services - Frequencies',
     labels={'Service': 'Service', 'Frequency': 'Frequency'},
     template='plotly_dark',
     color='Frequency',
@@ -36,9 +38,9 @@ fig_bar = px.bar(
 
 fig_bar.update_layout(
     xaxis_title='Service',
-    yaxis_title='Frequency (Log Scale)',
+    yaxis_title='Frequency (Log Scale)' if log_scale else 'Frequency',
     xaxis_tickangle=60,
-    yaxis_type='log',
+    yaxis_type='log' if log_scale else 'linear',
     height=700
 )
 
@@ -53,8 +55,6 @@ num_bins = st.slider("🔧 Select Number of Bins", min_value=10, max_value=200, 
 
 # Create histogram using numpy histogram binning
 counts, bins = np.histogram(df['Frequency'], bins=num_bins)
-
-# Mid-points of bins for plotting
 bin_centers = 0.5 * (bins[:-1] + bins[1:])
 
 # Create a histogram DataFrame
