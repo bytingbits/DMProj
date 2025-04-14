@@ -37,7 +37,7 @@ def create_bubble(data, title):
         hover_name="label",
         title=title,
         size_max=60,
-        color_discrete_sequence=px.colors.sequential.Pastel
+        color_discrete_sequence=px.colors.sequential.Tealgrn
     )
 
     fig.update_layout(
