@@ -26,15 +26,21 @@ itemsets_df['support'] = itemsets_df['support'].round(2)
 def create_bubble(data, title, color_palette):
     data = data.copy()
     data["size_scaled"] = data["support"] ** 2.5
-    data["grid_x"] = [i % 5 for i in range(len(data))]
-    data["grid_y"] = [-i // 5 for i in range(len(data))]
+    sorted_data = data.sort_values("support", ascending=False).reset_index(drop=True)
+    half = len(sorted_data) // 2
+    interleaved = pd.concat([sorted_data.iloc[::2], sorted_data.iloc[1::2][::-1]], ignore_index=True)
 
-    spacing = 0.6 + 0.02 * data["size_scaled"]
-    data["x"] = data["grid_x"] * spacing + np.random.normal(0, 0.05, size=len(data))
-    data["y"] = data["grid_y"] + np.random.normal(0, 0.1, size=len(data))
+    interleaved["grid_x"] = [i % 5 for i in range(len(interleaved))]
+    interleaved["grid_y"] = [i // 5 for i in range(len(interleaved))]
+
+    interleaved["x_spacing"] = 0.6 + 0.02 * interleaved["size_scaled"]
+    interleaved["y_spacing"] = 0.6 + 0.02 * interleaved["size_scaled"]
+
+    interleaved["x"] = interleaved["grid_x"] * interleaved["x_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
+    interleaved["y"] = -interleaved["grid_y"] * interleaved["y_spacing"] + np.random.normal(0, 0.05, size=len(interleaved))
 
     fig = px.scatter(
-        data,
+        interleaved,
         x="x",
         y="y",
         size="size_scaled",
