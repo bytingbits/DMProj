@@ -27,7 +27,7 @@ st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, a
 st.subheader("Association Rules")
 c1, spacer, c2 = st.columns([2.5, 0.5, 7])
 with c1:
-   st.markdown("<div style='height: 90px;'></div>", unsafe_allow_html=True)
+   st.markdown("<div style='height: 75px;'></div>", unsafe_allow_html=True)
    conf_val = st.slider("Confidence", 0.5, 1.0, (0.5, 1.0), step=0.01)
    lift_val = st.slider("Lift", 1.0, 3.3, (1.0, 3.3), step=0.1)
     
