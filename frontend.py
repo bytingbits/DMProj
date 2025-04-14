@@ -61,7 +61,7 @@ def get_diverse_top_n(df, length, n=10):
     
     diverse_sample = (
         subset.groupby("support_bin", group_keys=False)
-        .apply(lambda x: x.sample(1, random_state=42))
+        .apply(lambda x: x.sample(2, random_state=42))
         .reset_index(drop=True)
     )
     
