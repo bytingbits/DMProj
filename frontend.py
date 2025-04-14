@@ -29,8 +29,8 @@ def create_bubble(data, title, color_palette):
     data["grid_x"] = [i % 5 for i in range(len(data))]
     data["grid_y"] = [-i // 5 for i in range(len(data))]
 
-    np.random.seed(42) 
-    data["x"] = data["grid_x"] + np.random.uniform(-0.2, 0.2, size=len(data))
+    spacing = 0.6 + 0.02 * data["size_scaled"]
+    data["x"] = data["grid_x"] * spacing + np.random.normal(0, 0.05, size=len(data))
     data["y"] = data["grid_y"] + np.random.normal(0, 0.1, size=len(data))
 
     fig = px.scatter(
