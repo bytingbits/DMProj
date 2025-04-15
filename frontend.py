@@ -105,7 +105,7 @@ fig = go.Figure(data=base_traces + init_traces, frames=frames)
 
 fig.update_layout(
     title='Triangular Membership Function',
-    title_font_size=15,
+    title_font_size=19,
     plot_bgcolor='white',
     xaxis=dict(title='Visit Count', range=[0, 100], gridcolor='lightgray'),
     yaxis=dict(title='Membership Value', range=[0, 1.1], gridcolor='lightgray'),
