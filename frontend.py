@@ -148,7 +148,7 @@ with a2:
     
     # Prepare chart data
     categories = ['L', 'M', 'H']
-    colors = ['#FFB6C1', '#FFC0CB', '#DB7093']  # Soft pink variations
+    colors = ['#ff9aa2', '#ffb7b2', '#ffdac1']
     counts = [label_counts.get(c, 0) for c in categories]
     names = ['Low', 'Medium', 'High']
     
@@ -169,6 +169,8 @@ with a2:
         font=dict(color='white'),
         paper_bgcolor='rgba(0,0,0,0)',  # transparent
         plot_bgcolor='rgba(0,0,0,0)'
+        width=450,  # or 450 to match
+        height=400
     )
     
     st.plotly_chart(fig, use_container_width=True)
