@@ -6,6 +6,7 @@ import numpy as np
 import skfuzzy as fuzz
 import plotly.graph_objects as go
 from collections import Counter
+import ast
 
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
@@ -137,6 +138,7 @@ with a2:
     # Get the row for the selected time
     txn_row = fuzzy_df[fuzzy_df['time_window'] == selected_time].iloc[0]
     fuzzy_visits = txn_row['fuzzified_visits']
+    fuzzy_visits = ast.literal_eval(txn_row['fuzzified_visits'])
     
     # Count most dominant membership label per service
     label_counts = Counter()
