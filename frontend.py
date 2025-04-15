@@ -20,40 +20,7 @@ st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, a
 
 #Itemsets Row
 st.subheader("Frequent Itemsets")
-itemsets_df["label"] = itemsets_df["itemsets"].apply(lambda x: ", ".join(eval(x)))
 itemsets_df['support'] = itemsets_df['support'].round(2)
-
-def create_bubble(data, title, color_palette):
-    data = data.copy()
-    data["size_scaled"] = data["support"] ** 2.5
-    data['x'] = np.random.uniform(-0.3, 0.3, size=len(data)) 
-
-    fig = px.scatter(
-        data,
-        x="x",
-        y="support",
-        size="size_scaled",
-        color="label",
-        hover_name="label",
-        title=title,
-        size_max=60,
-        color_discrete_sequence=color_palette
-    )
-
-    fig.update_layout(
-        showlegend=False,
-        height=400,
-        margin=dict(t=40, b=20, l=20, r=20),
-        xaxis=dict(showticklabels=False, title=""),
-        yaxis=dict(title="Support")
-    )
-
-    fig.update_traces(
-        marker=dict(opacity=0.7, line=dict(width=1, color='DarkSlateGrey')),
-        hovertemplate="<b>%{hovertext}</b><br>Support: %{y:.2f}<extra></extra>"
-    )
-
-    return fig
 
 def get_diverse_top_n(df, length, n=10):
     subset = df[df["length"] == length].copy()
@@ -74,13 +41,14 @@ top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
 b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
 with b1:
-    st.plotly_chart(create_bubble(top1, "1-Itemsets", px.colors.sequential.Tealgrn), use_container_width=True)
-
+    st.subheader('1-Itemsets')
+    st.dataframe(top1, height=250)
 with b2:
-    st.plotly_chart(create_bubble(top2, "2-Itemsets", px.colors.sequential.Purpor), use_container_width=True)
-
+    st.subheader('2-Itemsets')
+    st.dataframe(top2, height=250)
 with b3:
-    st.plotly_chart(create_bubble(top3, "3-Itemsets", px.colors.sequential.RdPu), use_container_width=True)
+    st.subheader('3-Itemsets')
+    st.dataframe(top3, height=250)
 
 #Association Rules Row
 st.subheader("Association Rules")
