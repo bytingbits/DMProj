@@ -21,7 +21,7 @@ st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, a
 
 #Fuzzification Row
 st.subheader("Fuzzification")
-a1, a2 = st.columns([1, 1])
+a1, a2 = st.columns([6, 4])
 # Parameters
 low_params = [0, 0, 50]
 medium_params = [25, 50, 75]
@@ -104,8 +104,8 @@ for val in range(1, 101, 2):
 fig = go.Figure(data=base_traces + init_traces, frames=frames)
 
 fig.update_layout(
-    title='Animated Triangular Membership Function (Visit Count)',
-    title_font_size=22,
+    title='Triangular Membership Function',
+    title_font_size=15,
     plot_bgcolor='white',
     xaxis=dict(title='Visit Count', range=[0, 100], gridcolor='lightgray'),
     yaxis=dict(title='Membership Value', range=[0, 1.1], gridcolor='lightgray'),
