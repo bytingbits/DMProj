@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import re
 import numpy as np
+import skfuzzy as fuzz
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
@@ -16,6 +18,115 @@ itemsets_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs
 # Sidebar for global filters and settings
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
 st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, association rules, clustering, and predictions.")
+
+#Fuzzification Row
+st.subheader("Fuzzification")
+a1, a2 = st.columns([1, 1])
+# Parameters
+low_params = [0, 0, 50]
+medium_params = [25, 50, 75]
+high_params = [50, 100, 100]
+
+# Trimmed x-axis for better view
+x = np.linspace(0, 100, 500)
+y_low = fuzz.trimf(x, low_params)
+y_med = fuzz.trimf(x, medium_params)
+y_high = fuzz.trimf(x, high_params)
+
+# Aesthetic color palette
+colors = {
+    "low": "#5DADE2",    # soft blue
+    "medium": "#F5B041", # amber
+    "high": "#58D68D",   # mint green
+    "line": "rgba(120,120,120,0.5)"  # faint gray
+}
+
+# Base static membership curves
+base_traces = [
+    go.Scatter(x=x, y=y_low, mode='lines', name='Low', line=dict(color=colors["low"], width=3)),
+    go.Scatter(x=x, y=y_med, mode='lines', name='Medium', line=dict(color=colors["medium"], width=3)),
+    go.Scatter(x=x, y=y_high, mode='lines', name='High', line=dict(color=colors["high"], width=3)),
+]
+
+# Initial position
+init_val = 10
+μ_l0 = fuzz.trimf(np.array([init_val]), low_params)[0]
+μ_m0 = fuzz.trimf(np.array([init_val]), medium_params)[0]
+μ_h0 = fuzz.trimf(np.array([init_val]), high_params)[0]
+
+# Initial dot traces + vertical line
+init_traces = [
+    go.Scatter(x=[init_val], y=[μ_l0], mode='markers+text', name='Low μ',
+               marker=dict(color=colors["low"], size=10, line=dict(width=1, color='black')),
+               text=["Low"], textposition="top center"),
+    go.Scatter(x=[init_val], y=[μ_m0], mode='markers+text', name='Medium μ',
+               marker=dict(color=colors["medium"], size=10, line=dict(width=1, color='black')),
+               text=["Med"], textposition="top center"),
+    go.Scatter(x=[init_val], y=[μ_h0], mode='markers+text', name='High μ',
+               marker=dict(color=colors["high"], size=10, line=dict(width=1, color='black')),
+               text=["High"], textposition="top center"),
+    go.Scatter(x=[init_val, init_val], y=[0, 1], mode='lines',
+               name='Current Visit Count',
+               line=dict(color=colors["line"], dash='dot', width=2))
+]
+
+# Animation frames
+frames = []
+for val in range(1, 101, 2):
+    μ_l = fuzz.trimf(np.array([val]), low_params)[0]
+    μ_m = fuzz.trimf(np.array([val]), medium_params)[0]
+    μ_h = fuzz.trimf(np.array([val]), high_params)[0]
+
+    frames.append(go.Frame(
+        data=[
+            # Redraw membership lines
+            go.Scatter(x=x, y=y_low, mode='lines', line=dict(color=colors["low"], width=3)),
+            go.Scatter(x=x, y=y_med, mode='lines', line=dict(color=colors["medium"], width=3)),
+            go.Scatter(x=x, y=y_high, mode='lines', line=dict(color=colors["high"], width=3)),
+            # Dots with labels
+            go.Scatter(x=[val], y=[μ_l], mode='markers+text',
+                       marker=dict(color=colors["low"], size=10, line=dict(width=1, color='black')),
+                       text=["Low"], textposition="top center"),
+            go.Scatter(x=[val], y=[μ_m], mode='markers+text',
+                       marker=dict(color=colors["medium"], size=10, line=dict(width=1, color='black')),
+                       text=["Med"], textposition="top center"),
+            go.Scatter(x=[val], y=[μ_h], mode='markers+text',
+                       marker=dict(color=colors["high"], size=10, line=dict(width=1, color='black')),
+                       text=["High"], textposition="top center"),
+            # Vertical guide
+            go.Scatter(x=[val, val], y=[0, 1], mode='lines',
+                       line=dict(color=colors["line"], dash='dot', width=2)),
+        ],
+        name=str(val)
+    ))
+
+# Combine all into final figure
+fig = go.Figure(data=base_traces + init_traces, frames=frames)
+
+fig.update_layout(
+    title='Animated Triangular Membership Function (Visit Count)',
+    title_font_size=22,
+    plot_bgcolor='white',
+    xaxis=dict(title='Visit Count', range=[0, 100], gridcolor='lightgray'),
+    yaxis=dict(title='Membership Value', range=[0, 1.1], gridcolor='lightgray'),
+    font=dict(family="Arial", size=14),
+    updatemenus=[{
+        "type": "buttons",
+        "showactive": False,
+        "buttons": [{
+            "label": "Play",
+            "method": "animate",
+            "args": [None, {
+                "frame": {"duration": 200, "redraw": True},  # slower animation
+                "fromcurrent": True,
+                "transition": {"duration": 100, "easing": "linear"}
+            }]
+        }]
+    }]
+)
+
+with a1:
+    st.plotly_chart(fig, use_container_width=True)
 
 #Itemsets Row
 st.subheader("Frequent Itemsets")
