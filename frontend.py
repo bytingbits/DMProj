@@ -5,6 +5,7 @@ import re
 import numpy as np
 import skfuzzy as fuzz
 import plotly.graph_objects as go
+from collections import Counter
 
 st.set_page_config(page_title="Fuzzy Association Rule Mining Dashboard", layout="wide")
 
@@ -14,6 +15,7 @@ def load_csv(url):
 
 rules_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/association_rules.csv")
 itemsets_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/frequent_itemsets.csv")
+fuzzy_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/heads/main/fuzzified_transactions.csv")
 
 # Sidebar for global filters and settings
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
@@ -126,6 +128,47 @@ fig.update_layout(
 )
 
 with a1:
+    st.plotly_chart(fig, use_container_width=True)
+
+with a2:
+    time_options = fuzzy_df['time_window'].unique().tolist()
+    selected_time = st.selectbox("Select Time Window", time_options)
+
+    # Get the row for the selected time
+    txn_row = fuzzy_df[fuzzy_df['time_window'] == selected_time].iloc[0]
+    fuzzy_visits = txn_row['fuzzified_visits']
+    
+    # Count most dominant membership label per service
+    label_counts = Counter()
+    for _, _, memberships in fuzzy_visits:
+        dominant_label = max(memberships, key=memberships.get)  # L / M / H
+        label_counts[dominant_label] += 1
+    
+    # Prepare chart data
+    categories = ['L', 'M', 'H']
+    colors = ['#FFB6C1', '#FFC0CB', '#DB7093']  # Soft pink variations
+    counts = [label_counts.get(c, 0) for c in categories]
+    names = ['Low', 'Medium', 'High']
+    
+    # Plot donut
+    fig = go.Figure(data=[go.Pie(
+        labels=names,
+        values=counts,
+        hole=0.5,
+        marker=dict(colors=colors),
+        textinfo='label+percent',
+        insidetextorientation='radial'
+    )])
+    
+    fig.update_layout(
+        title=f'Fuzzy Membership Distribution – {selected_time}',
+        showlegend=True,
+        margin=dict(t=50, b=0, l=0, r=0),
+        font=dict(color='white'),
+        paper_bgcolor='rgba(0,0,0,0)',  # transparent
+        plot_bgcolor='rgba(0,0,0,0)'
+    )
+    
     st.plotly_chart(fig, use_container_width=True)
 
 #Itemsets Row
