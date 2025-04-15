@@ -169,8 +169,8 @@ with a2:
         font=dict(color='white'),
         paper_bgcolor='rgba(0,0,0,0)',  # transparent
         plot_bgcolor='rgba(0,0,0,0)',
-        width=450,  # or 450 to match
-        height=400
+        width=400,  # or 450 to match
+        height=350
     )
     
     st.plotly_chart(fig, use_container_width=True)
