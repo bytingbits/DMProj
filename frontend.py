@@ -37,7 +37,7 @@ top1 = get_diverse_top_n(itemsets_df, length=1, n=10)
 top2 = get_diverse_top_n(itemsets_df, length=2, n=10)
 top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
     
-b1, b2, b3 = st.columns([2, 3, 4])
+b1, b2, b3 = st.columns([4, 6, 9])
 
 with b1:
     st.subheader('1-Itemsets')
