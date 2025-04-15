@@ -168,7 +168,7 @@ with a2:
         margin=dict(t=50, b=0, l=0, r=0),
         font=dict(color='white'),
         paper_bgcolor='rgba(0,0,0,0)',  # transparent
-        plot_bgcolor='rgba(0,0,0,0)'
+        plot_bgcolor='rgba(0,0,0,0)',
         width=450,  # or 450 to match
         height=400
     )
