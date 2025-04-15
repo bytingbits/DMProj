@@ -42,13 +42,13 @@ b1, spacer1, b2, spacer2, b3 = st.columns([3, 0.5, 3, 0.5, 3])
 
 with b1:
     st.subheader('1-Itemsets')
-    st.dataframe(top1, height=250)
+    st.dataframe(top1[['itemsets', 'support']] , height=250)
 with b2:
     st.subheader('2-Itemsets')
-    st.dataframe(top2, height=250)
+    st.dataframe(top2[['itemsets', 'support']], height=250)
 with b3:
     st.subheader('3-Itemsets')
-    st.dataframe(top3, height=250)
+    st.dataframe(top3[['itemsets', 'support']], height=250)
 
 #Association Rules Row
 st.subheader("Association Rules")
