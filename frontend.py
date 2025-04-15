@@ -37,7 +37,7 @@ top1 = get_diverse_top_n(itemsets_df, length=1, n=10)
 top2 = get_diverse_top_n(itemsets_df, length=2, n=10)
 top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
     
-b1, spacer1, b2, spacer2, b3 = st.columns([2, 0.1, 3.4, 0.1, 4.4])
+b1, b2, b3 = st.columns([2, 3, 4])
 
 with b1:
     st.subheader('1-Itemsets')
@@ -71,8 +71,7 @@ with c2:
      if top_rules.empty:
         st.warning("No rules match the selected filters!")
      else:
-        top_rules.index = [''] * len(top_rules)
-        st.dataframe(top_rules, height=250)
+        st.dataframe(top_rules, height=250, hide_index=True)
   
 
 
