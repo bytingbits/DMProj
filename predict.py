@@ -16,7 +16,7 @@ download_url = f"https://drive.google.com/uc?id={file_id}"
 df = pd.read_csv(download_url)
 st.write(df)
 options = df
-CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
+#CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
 
 file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
 download_url1 = f"https://drive.google.com/uc?id={file_id}"
