@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# GitHub raw CSV URL
+"""# GitHub raw CSV URL
 CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_service_frequencies.csv"
 
 st.set_page_config(page_title="Service Frequencies", layout="wide")
@@ -58,7 +58,7 @@ fig = px.histogram(df, x="Frequency", nbins=bin_size, title="Service Frequency H
 fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visualization
 
 # Show the histogram
-st.plotly_chart(fig)
+st.plotly_chart(fig)"""
 #----added prediction----
 CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
 df1 = pd.read_csv(CSV_URL1, converters={
