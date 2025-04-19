@@ -59,7 +59,8 @@ fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visuali
 # Show the histogram
 st.plotly_chart(fig)
 #----added prediction----
-df = pd.read_csv("cleaned_final_association_rules.csv", converters={
+CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
+df = pd.read_csv(CSV_URL1, converters={
     'antecedents': eval,
     'consequents': eval
 })
@@ -82,7 +83,7 @@ def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence',
 
     # Filter rules where antecedents are a subset of current sites
     matched_rules = rules_df[rules_df['antecedents'].apply(lambda x: x.issubset(current_set))]
-
+    
     if matched_rules.empty:
         return pd.DataFrame(columns=['Website', metric] + (['lift'] if show_lift else []))
 
