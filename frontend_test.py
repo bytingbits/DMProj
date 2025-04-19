@@ -61,7 +61,7 @@ fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visuali
 st.plotly_chart(fig)
 #----added prediction----
 CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
-df = pd.read_csv(CSV_URL1, converters={
+df1 = pd.read_csv(CSV_URL1, converters={
     'antecedents': eval,
     'consequents': eval
 })
@@ -108,6 +108,6 @@ def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence',
     return pd.DataFrame(predictions)
 
 current_history = selected = st.multiselect("Choose service in current history: ", options)
-predicted = predict_next_websites(current_history, df, top_n=5, metric='confidence', show_lift=False)
+predicted = predict_next_websites(current_history, df1, top_n=5, metric='confidence', show_lift=False)
 st.write(predicted)
 
