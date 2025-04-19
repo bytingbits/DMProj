@@ -60,6 +60,22 @@ fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visuali
 # Show the histogram
 st.plotly_chart(fig)"""
 #----added prediction----
+CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_service_frequencies.csv"
+
+#st.set_page_config(page_title="Service Frequencies", layout="wide")
+
+#st.title("📊 Service Frequencies Bar Chart")
+#st.markdown("Each bar shows the frequency of a specific service.")
+
+# Load data
+@st.cache_data
+def load_data():
+    df = pd.read_csv(CSV_URL)
+    return df
+
+df = load_data()
+options = df['Service'] #pred
+
 CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
 df1 = pd.read_csv(CSV_URL1, converters={
     'antecedents': eval,
