@@ -25,7 +25,8 @@ df1 = pd.read_csv(download_url1, converters={
     'antecedents': eval,
     'consequents': eval
 })
-
+st.write(" df1 'dump" )
+st.write(df1)
 def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence', show_lift=True):
     """
     Predicts the next likely website(s) based on fuzzy association rules.
