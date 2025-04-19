@@ -3,25 +3,25 @@ import pandas as pd
 import plotly.express as px
 
 
-CSV_URL = "https://raw.githubusercontent.com/bytingbits/DMProj/main/sorted_service_frequencies.csv"
 
-#st.set_page_config(page_title="Service Frequencies", layout="wide")
 
-#st.title("📊 Service Frequencies Bar Chart")
-#st.markdown("Each bar shows the frequency of a specific service.")
 
-# Load data
-@st.cache_data
-def load_data():
-    df = pd.read_csv(CSV_URL)
-    return df
 
-df = load_data()
-options = df #pred
+
+
+file_id = "1LmgJ7wmSq_6sMVFytewc9B1PJ3qwHvHe"
+download_url = f"https://drive.google.com/uc?id={file_id}"
+
+# Load into pandas DataFrame
+df = pd.read_csv(download_url)
 st.write(df)
+options = df
+CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
 
-CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO/view?usp=sharing"
-df1 = pd.read_csv(CSV_URL1, converters={
+file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
+download_url1 = f"https://drive.google.com/uc?id={file_id}"
+
+df1 = pd.read_csv(download_url1, converters={
     'antecedents': eval,
     'consequents': eval
 })
