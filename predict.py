@@ -18,6 +18,7 @@ def load_data():
 
 df = load_data()
 options = df #pred
+st.write(df)
 
 CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
 df1 = pd.read_csv(CSV_URL1, converters={
