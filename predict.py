@@ -20,7 +20,7 @@ df = load_data()
 options = df #pred
 st.write(df)
 
-CSV_URL1 = "https://raw.githubusercontent.com/bytingbits/DMProj/main/cleaned_final_association_rules.csv"
+CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO/view?usp=sharing"
 df1 = pd.read_csv(CSV_URL1, converters={
     'antecedents': eval,
     'consequents': eval
