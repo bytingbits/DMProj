@@ -105,7 +105,7 @@ def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence',
             break
 
     return pd.DataFrame(predictions)
-options = df['service']
+options = df['Service']
 current_history = selected = st.multiselect("Choose service in current history: ", options)
 predicted = predict_next_websites(current_history, df, top_n=5, metric='confidence', show_lift=False)
 st.write(predicted)
