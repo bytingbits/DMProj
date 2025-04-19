@@ -16,8 +16,8 @@ except Exception as e:
     st.error(f"Error loading df: {e}")
 
 # Load association rules dataset (df1)
-file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
-download_url1 = f"https://drive.google.com/uc?id={file_id1}"
+fid = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
+download_url1 = f"https://drive.google.com/uc?id={fid}"
 
 st.subheader("Association Rules Dataset (df1)")
 st.write("Download URL:", download_url1)
