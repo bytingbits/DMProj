@@ -18,6 +18,7 @@ def load_data():
 
 df = load_data()
 options = df['Service'] #pred
+options = df
 
 # Optional top-k filter
 top_k = st.slider("🔝 Show Top K Services", min_value=10, max_value=200, value=50)
