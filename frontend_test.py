@@ -58,5 +58,54 @@ fig.update_layout(bargap=1)  # Adjusting the gap between bars for better visuali
 
 # Show the histogram
 st.plotly_chart(fig)
+#----added prediction----
+df = pd.read_csv("cleaned_final_association_rules.csv", converters={
+    'antecedents': eval,
+    'consequents': eval
+})
+import pandas as pd
 
+def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence', show_lift=True):
+    """
+    Predicts the next likely website(s) based on fuzzy association rules.
+
+    Args:
+        current_sites (list or set): The websites visited so far.
+        rules_df (DataFrame): The mined fuzzy association rules.
+        top_n (int): Number of top predictions to return.
+        metric (str): Metric to sort predictions by.
+        show_lift (bool): Whether to include lift in the output DataFrame.
+
+    Returns:
+        DataFrame: Top predicted websites with selected metrics.
+    """
+    current_set = frozenset(current_sites)
+
+    # Filter rules where antecedents are a subset of current sites
+    matched_rules = rules_df[rules_df['antecedents'].apply(lambda x: x.issubset(current_set))]
+
+    if matched_rules.empty:
+        return pd.DataFrame(columns=['Website', metric] + (['lift'] if show_lift else []))
+
+    # Flatten consequents and collect metrics
+    predictions = []
+    seen = set()
+
+    for _, row in matched_rules.sort_values(by=metric, ascending=False).iterrows():
+        for site in row['consequents']:
+            if site not in seen:
+                entry = {'Website': site, metric: row[metric]}
+                if show_lift:
+                    entry['lift'] = row['lift']
+                predictions.append(entry)
+                seen.add(site)
+            if len(predictions) == top_n:
+                break
+        if len(predictions) == top_n:
+            break
+
+    return pd.DataFrame(predictions)
+current_history = ['Rackspace-CDN_H', 'MMS_H']
+predicted = predict_next_websites(current_history, df, top_n=5, metric='confidence', show_lift=False)
+st.write(predicted)
 
