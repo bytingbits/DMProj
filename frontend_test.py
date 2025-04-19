@@ -63,7 +63,6 @@ df = pd.read_csv("cleaned_final_association_rules.csv", converters={
     'antecedents': eval,
     'consequents': eval
 })
-import pandas as pd
 
 def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence', show_lift=True):
     """
@@ -105,7 +104,8 @@ def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence',
             break
 
     return pd.DataFrame(predictions)
-current_history = ['Rackspace-CDN_H', 'MMS_H']
+options = df['service']
+current_history = selected = st.multiselect("Choose service in current history: ", options)
 predicted = predict_next_websites(current_history, df, top_n=5, metric='confidence', show_lift=False)
 st.write(predicted)
 
