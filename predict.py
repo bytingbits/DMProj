@@ -17,9 +17,9 @@ df = pd.read_csv(download_url)
 st.write(df)
 options = df
 #CSV_URL1 = "https://drive.google.com/file/d/1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
-
+https://drive.google.com/file/d/
 file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
-download_url1 = f"https://drive.google.com/uc?id={file_id}"
+download_url1 = f"https://drive.google.com/uc?id={file_id1}"
 
 df1 = pd.read_csv(download_url1, converters={
     'antecedents': eval,
