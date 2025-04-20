@@ -1,6 +1,6 @@
 bubbly
 scikit-fuzzy
 scipy
-gdown
+requests
 os
 pandas
