@@ -29,31 +29,28 @@ except Exception as e:
     st.error(f"Error loading association rules: {e}")"""
 import streamlit as st
 import pandas as pd
-import gdown
-import os
+import requests
+import io
 
-# Step 1: Download CSV from Google Drive using gdown
+# Association Rules File from Google Drive
 file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
-gdrive_url = f"https://drive.google.com/uc?id={file_id1}"
-output_csv = "rules.csv"
+download_url1 = f"https://drive.google.com/uc?export=download&id={file_id1}"
 
-# Check if the file already exists to avoid re-downloading
-if not os.path.exists(output_csv):
-    try:
-        gdown.download(gdrive_url, output_csv, quiet=False)
-    except Exception as e:
-        st.error(f"Download failed: {e}")
-
-# Step 2: Load CSV with pandas
-try:
-    df1 = pd.read_csv(output_csv, converters={
+def download_csv_from_gdrive(url):
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception("Failed to download file")
+    return pd.read_csv(io.StringIO(response.text), converters={
         'antecedents': eval,
         'consequents': eval
     })
+
+try:
+    df1 = download_csv_from_gdrive(download_url1)
     st.subheader("Association Rules Dataset (df1)")
     st.write(df1.head())
 except Exception as e:
-    st.error(f"Error loading CSV: {e}")
+    st.error(f"Error loading association rules: {e}")
 
 
 # Prediction Function
