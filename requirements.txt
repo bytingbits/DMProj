@@ -2,5 +2,4 @@ bubbly
 scikit-fuzzy
 scipy
 requests
-os
 pandas
