@@ -1,3 +1,6 @@
 bubbly
 scikit-fuzzy
 scipy
+gdown
+os
+pandas
