@@ -4,7 +4,7 @@ import pandas as pd
 st.title("Website Recommendation System")
 
 # Load Main Data (df)
-file_id = "1LmgJ7wmSq_6sMVFytewc9B1PJ3qwHvHe"
+"""file_id = "1LmgJ7wmSq_6sMVFytewc9B1PJ3qwHvHe"
 download_url = f"https://drive.google.com/uc?id={file_id}"
 
 try:
@@ -12,7 +12,7 @@ try:
     st.subheader("Main Dataset (df)")
     st.write(df.head())
 except Exception as e:
-    st.error(f"Error loading main dataset: {e}")
+    st.error(f"Error loading main dataset: {e}")"""
 
 # Load Association Rules (df1)
 file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
