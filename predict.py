@@ -12,7 +12,7 @@ try:
     st.subheader("Main Dataset (df)")
     st.write(df.head())
 except Exception as e:
-    st.error(f"Error loading main dataset: {e}")"""
+    st.error(f"Error loading main dataset: {e}")
 
 # Load Association Rules (df1)
 file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
@@ -26,7 +26,35 @@ try:
     st.subheader("Association Rules Dataset (df1)")
     st.write(df1.head())
 except Exception as e:
-    st.error(f"Error loading association rules: {e}")
+    st.error(f"Error loading association rules: {e}")"""
+import streamlit as st
+import pandas as pd
+import gdown
+import os
+
+# Step 1: Download CSV from Google Drive using gdown
+file_id1 = "1lrL0OwuLVi5DMF_srFDH8Me_yt4o9cNO"
+gdrive_url = f"https://drive.google.com/uc?id={file_id1}"
+output_csv = "rules.csv"
+
+# Check if the file already exists to avoid re-downloading
+if not os.path.exists(output_csv):
+    try:
+        gdown.download(gdrive_url, output_csv, quiet=False)
+    except Exception as e:
+        st.error(f"Download failed: {e}")
+
+# Step 2: Load CSV with pandas
+try:
+    df1 = pd.read_csv(output_csv, converters={
+        'antecedents': eval,
+        'consequents': eval
+    })
+    st.subheader("Association Rules Dataset (df1)")
+    st.write(df1.head())
+except Exception as e:
+    st.error(f"Error loading CSV: {e}")
+
 
 # Prediction Function
 def predict_next_websites(current_sites, rules_df, top_n=5, metric='confidence', show_lift=True):
