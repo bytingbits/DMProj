@@ -234,7 +234,7 @@ with c2:
 #Prediction Row
 st.subheader("Prediction")
 d1, d2 = st.columns([1, 1])
-all_fuzzy_services = sorted(set().union(*rules_df['antecedents']))
+all_fuzzy_services = rules_df['antecedents'].unique().tolist()
 with d1:
     st.subheader("Select Services")
     selected_services = st.multiselect(
