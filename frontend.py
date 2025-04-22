@@ -247,7 +247,7 @@ with d1:
 
 def predict_top_5_next_websites(user_session, rules):
     user_set = set(user_session)
-    matching_rules = rules[rules['antecedents'].apply(lambda x: x.issubset(user_set))]
+    matching_rules = rules[rules['antecedents'].apply(lambda x: frozenset(x).issubset(user_set))]
 
     if not matching_rules.empty:
         top_5 = matching_rules.sort_values(by=["confidence", "lift"], ascending=False).head(5)
