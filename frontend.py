@@ -258,7 +258,7 @@ def predict_top_5_next_websites(user_session, rules):
 with d2:
     st.markdown("Predicted Services")
     if predict_clicked and selected_services:
-        predicted_df = predict_top_5_next_websites(selected_services, df_rules_fuzzy)
+        predicted_df = predict_top_5_next_websites(selected_services, rules_df)
         st.dataframe(predicted_df, use_container_width=True, height=250, hide_index=True)
     elif predict_clicked and not selected_services:
         st.warning("Please select 1 or 2 services before predicting.")
