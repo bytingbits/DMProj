@@ -195,7 +195,7 @@ top1 = get_diverse_top_n(itemsets_df, length=1, n=10)
 top2 = get_diverse_top_n(itemsets_df, length=2, n=10)
 top3 = get_diverse_top_n(itemsets_df, length=3, n=10)
     
-b1, b2, b3 = st.columns([1, 1, 1])
+b1, b2 = st.columns([1, 2])
 
 with b1:
     st.subheader('1-Itemsets')
@@ -203,10 +203,10 @@ with b1:
 with b2:
     st.subheader('2-Itemsets')
     st.dataframe(top2[['itemsets', 'support']], height=250, hide_index=True)
-with b3:
-    st.subheader('3-Itemsets')
-    st.dataframe(top3[['itemsets', 'support']], height=250, hide_index=True)
 
+st.subheader('3-Itemsets')
+st.dataframe(top3[['itemsets', 'support']], height=250, hide_index=True)
+    
 #Association Rules Row
 st.subheader("Association Rules")
 c1, spacer, c2 = st.columns([2.5, 0.5, 7])
@@ -270,7 +270,16 @@ with d2:
     st.subheader("Predicted Services")
     if predict_clicked and selected_services:
         predicted_df = predict_top_5_next_websites(selected_services, rules_df)
-        st.dataframe(predicted_df, use_container_width=True, height=250, hide_index=True)
+        st.dataframe(
+            predicted_df.rename(columns={
+                "consequents": "Predicted Services",
+                "confidence": "Confidence",
+                "lift": "Lift"
+            }),
+            use_container_width=True,
+            height=250,
+            hide_index=True
+        )
     
     elif predict_clicked and not selected_services:
         st.warning("Please select 1 or 2 fuzzy services before predicting.")
