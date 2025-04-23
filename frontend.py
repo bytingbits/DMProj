@@ -175,22 +175,6 @@ with a2:
     
     st.plotly_chart(fig, use_container_width=True)
 
-def format_membership(mem):
-    return f"L: {mem['L']:.2f}, M: {mem['M']:.2f}, H: {mem['H']:.2f}"
-
-def render_transaction_table(txn_row):
-    data = [{
-        "Service": s,
-        "Count": c,
-        "Fuzzy Membership": format_membership(mem),
-        "Label": max(mem, key=mem.get)  # 'L', 'M', or 'H'
-    } for s, c, mem in ast.literal_eval(txn_row['fuzzified_visits'])]
-
-    df_display = pd.DataFrame(data).sort_values(by="Count", ascending=False)
-    st.dataframe(df_display, height=500, hide_index=True)
-
-txn_row = fuzzy_df[fuzzy_df['time_window'].astype(str) == selected_time].iloc[0]
-render_transaction_table(txn_row)
 
 #Itemsets Row
 st.subheader("Frequent Itemsets")
