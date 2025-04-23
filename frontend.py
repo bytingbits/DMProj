@@ -1,4 +1,6 @@
 import streamlit as st
+from streamlit import dataframe as df_st
+from streamlit.dataframe import ColumnConfig
 import os
 import pandas as pd
 import re
@@ -202,7 +204,9 @@ with b1:
     st.dataframe(top1[['itemsets', 'support']], height=250, hide_index=True)
 with b2:
     st.subheader('2-Itemsets')
-    st.dataframe(top2[['itemsets', 'support']], height=250, hide_index=True)
+    st.dataframe(top2[['itemsets', 'support']], height=250, hide_index=True, column_config={
+        "support": ColumnConfig(width="small")
+    })
 
 st.subheader('3-Itemsets')
 st.dataframe(top3[['itemsets', 'support']], height=250, hide_index=True)
