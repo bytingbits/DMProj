@@ -234,16 +234,19 @@ with c2:
 #Prediction Row
 st.subheader("Prediction")
 d1, d2 = st.columns([1, 1])
-all_fuzzy_services = sorted(
-    set(service.strip() 
-        for antecedent in rules_df['antecedents'] 
-        for service in antecedent.split(","))
-)
+def parse_antecedent_string(s):
+    return [i.strip().strip("'") for i in s.split(",")]
+
+all_services = sorted(set(
+    service
+    for row in rules_df['antecedents']
+    for service in parse_antecedent_string(row)
+))
 with d1:
     st.subheader("Select Services")
     selected_services = st.multiselect(
         "Fuzzy Services",
-        options=all_fuzzy_services,
+        options=all_services,
         max_selections=2
     )
 
@@ -253,7 +256,7 @@ def predict_top_5_next_websites(user_session, rules):
     user_set = set(user_session)
 
     def is_match(ante_str):
-        antecedent_set = set(s.strip() for s in ante_str.split(","))
+        antecedent_set = set(parse_antecedent_string(ante_str))
         return antecedent_set.issubset(user_set)
 
     matching_rules = rules[rules['antecedents'].apply(is_match)]
@@ -261,9 +264,9 @@ def predict_top_5_next_websites(user_session, rules):
     if not matching_rules.empty:
         top_5 = matching_rules.sort_values(by=["confidence", "lift"], ascending=False).head(5)
         return top_5[['consequents', 'confidence', 'lift']]
-    
-    return pd.DataFrame({"Message": ["No matching rules found."]})
 
+    return pd.DataFrame({"Message": ["No matching rules found."]})
+    
 with d2:
     st.markdown("Predicted Services")
     if predict_clicked and selected_services:
