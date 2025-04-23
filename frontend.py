@@ -187,7 +187,7 @@ def render_transaction_table(txn_row):
     } for s, c, mem in ast.literal_eval(txn_row['fuzzified_visits'])]
 
     df_display = pd.DataFrame(data).sort_values(by="Count", ascending=False)
-    st.dataframe(df_display, height=750, hide_index=True)
+    st.dataframe(df_display, height=500, hide_index=True)
 
 txn_row = fuzzy_df[fuzzy_df['time_window'].astype(str) == selected_time].iloc[0]
 render_transaction_table(txn_row)
