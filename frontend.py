@@ -184,7 +184,7 @@ def render_transaction_table(txn_row):
         "Count": c,
         "Fuzzy Membership": format_membership(mem),
         "Label": max(mem, key=mem.get)  # 'L', 'M', or 'H'
-    } for s, c, mem in txn_row['fuzzified_visits']]
+    } for s, c, mem in ast.literal_eval(txn_row['fuzzified_visits'])]
 
     df_display = pd.DataFrame(data).sort_values(by="Count", ascending=False)
     st.dataframe(df_display, use_container_width=True)
