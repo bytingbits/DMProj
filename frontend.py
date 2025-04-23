@@ -234,7 +234,11 @@ with c2:
 #Prediction Row
 st.subheader("Prediction")
 d1, d2 = st.columns([1, 1])
-all_fuzzy_services = rules_df['antecedents'].unique().tolist()
+all_fuzzy_services = sorted(
+    set(service.strip() 
+        for antecedent in rules_df['antecedents'] 
+        for service in antecedent.split(","))
+)
 with d1:
     st.subheader("Select Services")
     selected_services = st.multiselect(
@@ -247,7 +251,12 @@ with d1:
 
 def predict_top_5_next_websites(user_session, rules):
     user_set = set(user_session)
-    matching_rules = rules[rules['antecedents'].apply(lambda x: frozenset(x).issubset(user_set))]
+
+    def is_match(ante_str):
+        antecedent_set = set(s.strip() for s in ante_str.split(","))
+        return antecedent_set.issubset(user_set)
+
+    matching_rules = rules[rules['antecedents'].apply(is_match)]
 
     if not matching_rules.empty:
         top_5 = matching_rules.sort_values(by=["confidence", "lift"], ascending=False).head(5)
@@ -257,10 +266,11 @@ def predict_top_5_next_websites(user_session, rules):
 
 with d2:
     st.markdown("Predicted Services")
-    if predict_clicked and selected_services:
+   if predict_clicked and selected_services:
         predicted_df = predict_top_5_next_websites(selected_services, rules_df)
         st.dataframe(predicted_df, use_container_width=True, height=250, hide_index=True)
+    
     elif predict_clicked and not selected_services:
-        st.warning("Please select 1 or 2 services before predicting.")
+        st.warning("Please select 1 or 2 fuzzy services before predicting.")
 
 
