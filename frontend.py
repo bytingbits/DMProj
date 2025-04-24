@@ -20,7 +20,7 @@ fuzzy_df = load_csv("https://raw.githubusercontent.com/bytingbits/DMProj/refs/he
 
 # Sidebar for global filters and settings
 st.sidebar.title("Fuzzy Association Rule Mining Dashboard")
-st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, association rules, clustering, and predictions.")
+st.sidebar.markdown("An interactive dashboard for analyzing frequent itemsets, association rules, and predictions.")
 
 #Fuzzification Row
 st.subheader("Fuzzification")
